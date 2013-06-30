@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 22, 2011 10:28:56 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+ <class name="com.nxm.bookstore.model.Order" table="ORDERS">
+  <id name="id" type="java.lang.Integer">
+   <column name="ID"/>
+   <generator class="assigned"/>
+  </id>
+  <property name="orderDate" type="java.sql.Timestamp" column="ORDER_DATE"/>
+  <many-to-one name="customer" cascade="all" class="com.nxm.bookstore.model.Customer" column="CUSTOMER_ID"/>
+ </class>
+</hibernate-mapping>
