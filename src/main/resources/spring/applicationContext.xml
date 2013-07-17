@@ -5,7 +5,7 @@
 	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
@@ -20,20 +20,20 @@
 	<!-- enables scanning for @Transactional annotations -->
 	<tx:annotation-driven />
 
-	<!-- Transaction manager for a single JDBC DataSource (alternative to JTA) 
+	<!-- Transaction manager for a single JDBC DataSource (alternative to JTA)  -->
 		<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" 
-		p:dataSource-ref="dataSource" /> -->
+		p:dataSource-ref="dataSource" />
 		
-	<bean id="transactionManager"
+	<!-- <bean id="transactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+	</bean> -->
 	
 	<bean id="namedParameterJdbcTemplate"
 		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
 		<constructor-arg ref="dataSource" />
 	</bean>
-
+<!--
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
@@ -53,14 +53,25 @@
 			</value>
 		</property>
 	</bean>
-
-	<bean id="bookDao" class="com.nxm.bookstore.dao.impl.HibernateBookDao"></bean>
+-->
+	<!-- <bean id="bookDao" class="com.nxm.bookstore.dao.impl.HibernateBookDao"></bean> -->
 	
 	<!-- <bean id="bookDao" class="com.nxm.bookstore.dao.impl.JdbcBookDao"> 
 		<property name="dataSource" ref="dataSource" /> </bean> -->
 		
-	<bean id="bookService" class="com.nxm.bookstore.service.BookService">
+	<bean id="bookService" class="com.nxm.bookstore.service.BookService"></bean>
+		
 
-	</bean>
+    <!-- define the SqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="typeAliasesPackage" value="com.nxm.bookstore.model" />
+    </bean>
+
+    <!-- scan for mappers and let them be autowired -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.nxm.bookstore.dao" />
+    </bean>
+	
 
 </beans>

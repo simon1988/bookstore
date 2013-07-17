@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nxm.bookstore.dao.IBookDao">
+
+	<resultMap id="orderResult" type="Order">
+		<collection property="books" column="id" ofType="Book"
+			select="selectBooksForOrder" />
+	</resultMap>
+
+	<select id="getAllOrders" resultMap="orderResult">
+		select a.id, a.order_date as orderDate, b.id as "customer.id", b.name as
+		"customer.name", b.address as "customer.address" from orders a inner
+		join customer b on a.customer_id=b.id
+	</select>
+	<select id="selectBooksForOrder" parameterType="int" resultType="Book">
+		select id, name, author from orders__books a inner join books b on
+		a.book_id = b.id where a.order_id= #{id}
+	</select>
+
+</mapper>

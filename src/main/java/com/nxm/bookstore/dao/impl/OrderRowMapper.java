@@ -17,6 +17,7 @@ public class OrderRowMapper implements RowMapper<Order> {
 		Customer customer = new Customer();
 		customer.setId(rs.getInt("b.id"));
 		customer.setName(rs.getString("b.name"));
+		customer.setAddress(rs.getString("b.address"));
 		order.setCustomer(customer);
 		return order;
 	}
