@@ -5,6 +5,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.nxm.bookstore.model.Order;
 import com.nxm.bookstore.service.BookService;
+
 public class Test {
 
 	public static void main(String[] args) {

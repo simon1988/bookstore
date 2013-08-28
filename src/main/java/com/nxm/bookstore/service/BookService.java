@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nxm.bookstore.dao.IBookDao;
@@ -12,6 +13,7 @@ import com.nxm.bookstore.model.Book;
 import com.nxm.bookstore.model.Customer;
 import com.nxm.bookstore.model.Order;
 
+@Service
 public class BookService {
 	static Logger logger=Logger.getLogger(BookService.class);
 	@Autowired
