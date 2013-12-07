@@ -19,6 +19,13 @@
     -->
     <context:component-scan base-package="com.nxm.bookstore.web"/>
     
+    <mvc:annotation-driven/>
+    <!--  all resources inside folder src/main/webapp/resources are mapped so they can be refered to inside JSP files -->
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
+    
+    <mvc:view-controller path="/" view-name="welcome" />
+    
+    
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <!-- Example: a logical view name of 'vets' is mapped to '/WEB-INF/jsp/vets.jsp' -->
         <property name="prefix" value="/WEB-INF/jsp/"/>
