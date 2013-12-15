@@ -23,7 +23,7 @@
     <!--  all resources inside folder src/main/webapp/resources are mapped so they can be refered to inside JSP files -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
     
-    <mvc:view-controller path="/" view-name="welcome" />
+    <mvc:view-controller path="/" view-name="index" />
     
     
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
