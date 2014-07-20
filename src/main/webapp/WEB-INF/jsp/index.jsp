@@ -6,5 +6,7 @@
     <script type="text/javascript" src="resources/extjs/ext-debug.js"></script>
     <script type="text/javascript" src="resources/app.js"></script>
 </head>
-<body></body>
+<body>
+<a href="booklist">booklist</a>
+</body>
 </html>
