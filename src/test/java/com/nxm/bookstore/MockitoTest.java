@@ -3,6 +3,7 @@ package com.nxm.bookstore;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
 
 import java.util.List;
 
@@ -19,11 +20,13 @@ public class MockitoTest {
 		List mockedList = mock(List.class);
 		
 		mockedList.add("one");
+		mockedList.add("two");
+		mockedList.add("two");
 		
 		when(mockedList.get(100)).thenReturn("100");
 		Assert.assertEquals("100", mockedList.get(100));
 		
 		verify(mockedList).add("one");
-//		verify(mockedList).add("two");
+		verify(mockedList, times(2)).add("two");
 	}
 }

@@ -14,10 +14,10 @@
 	<!-- ========================= DATASOURCE DEFINITION ========================= -->
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name = "driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name = "url" value="jdbc:mysql://localhost:3306/test" />
-		<property name = "username" value="root" />
-		<property name = "password" value="simon1988" />
+		<property name = "driverClassName" value="org.h2.Driver" />
+		<property name = "url" value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;init=create schema if not exists test\;set schema test\;runscript from 'classpath:/db/h2/customer_orders.h2.sql'\;" />
+		<property name = "username" value="sa" />
+		<property name = "password" value="" />
 		<property name = "initialSize" value="5" />
 		<property name = "maxActive" value="10" />
 	</bean>

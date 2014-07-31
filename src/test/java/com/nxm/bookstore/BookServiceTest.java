@@ -17,7 +17,7 @@ import com.nxm.bookstore.model.Book;
 import com.nxm.bookstore.model.Customer;
 import com.nxm.bookstore.service.BookService;
 
-@ContextConfiguration(locations = {"classpath:spring/applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:spring/applicationContext-test.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BookServiceTest {
 	static Logger logger = Logger.getLogger(BookServiceTest.class);

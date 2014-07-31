@@ -12,12 +12,12 @@ public class OrderRowMapper implements RowMapper<Order> {
 	@Override
 	public Order mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Order order = new Order();
-		order.setId(rs.getInt("a.id"));
+		order.setId(rs.getInt("orders.id"));
 		order.setOrderDate(rs.getTimestamp("order_date"));
 		Customer customer = new Customer();
-		customer.setId(rs.getInt("b.id"));
-		customer.setName(rs.getString("b.name"));
-		customer.setAddress(rs.getString("b.address"));
+		customer.setId(rs.getInt("customer.id"));
+		customer.setName(rs.getString("customer.name"));
+		customer.setAddress(rs.getString("customer.address"));
 		order.setCustomer(customer);
 		return order;
 	}
