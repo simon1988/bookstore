@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nxm.bookstore.model.Order;
@@ -28,4 +30,12 @@ public class HomeController {
 	public @ResponseBody Collection<Order> getAllOrders(){
 		return bookservice.getAllOrders();
 	}
+	
+	@RequestMapping(value="/user/{userId}/roles/{roleId}",method = RequestMethod.GET)  
+    public String getLogin(@PathVariable("userId") String userId,  
+        @PathVariable("roleId") String roleId){  
+        System.out.println("User Id : " + userId);  
+        System.out.println("Role Id : " + roleId);  
+        return "hello";  
+    } 
 }
