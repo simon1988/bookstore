@@ -138,6 +138,18 @@
 					<warName>bookstore</warName>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.2.8.v20150217</version>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<webAppConfig>
+						<defaultsDescriptor>src/test/resources/jetty/webdefault.xml</defaultsDescriptor>
+						<contextPath>/</contextPath>
+					</webAppConfig>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
