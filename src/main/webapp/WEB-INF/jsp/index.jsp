@@ -1,12 +1,29 @@
 <html>
 <head>
-    <title>Hello Ext!</title>
-
-    <link rel="stylesheet" type="text/css" href="resources/extjs/resources/css/ext-all.css">
-    <script type="text/javascript" src="resources/extjs/ext-all.js"></script>
-    <script type="text/javascript" src="resources/app.js"></script>
+    <title>Simon's Bookstore</title>
+    <link type="text/css" rel="stylesheet" href="resources/style/bookstore.css">
 </head>
 <body>
+<div id="shortcut-2014">
+    <div class="w">
+    	<ul class="fr">
+   	    <li class="fore1">
+	   	    <a href="/login">Login</a>
+	   	</li>
+	   	<li class="fore2">
+	   	    <a href="/register">Register</a>
+   	    </li>
+        <li class="spacer"></li>
+	    <li class="fore3">
+            <a href="/orders">My Orders</a>
+        </li>
+        <li class="spacer"></li>
+	    <li class="fore4">
+            <a href="/cart">My Cart</a>
+        </li>
+    	</ul>
+    </div>
+</div>
 <a href="booklist">booklist</a>
 </body>
 </html>
