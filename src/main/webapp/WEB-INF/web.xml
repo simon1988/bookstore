@@ -18,6 +18,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
+	<filter>
+		<filter-name>loginFilter</filter-name>
+		<filter-class>com.nxm.bookstore.filter.LoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>loginFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
 <!-- Servlet that dispatches request to registered handlers (Controller implementations). -->
     <servlet>
         <servlet-name>bookstore</servlet-name>
