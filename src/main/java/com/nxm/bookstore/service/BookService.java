@@ -21,15 +21,17 @@ public class BookService {
 	@Autowired
 	private IBookDao bookDao;
 	
+	
+
+	@Cacheable(value="bookCache", key="#bookId + 'test'")
+	@Transactional(readOnly=true)
+	public Book getBookById(int bookId){
+		return bookDao.getBookById(bookId);
+	}
 	@Cacheable(value="bookCache")
 	@Transactional(readOnly=true)
-	public Collection<Order> getAllOrders(){
-		return bookDao.getAllOrders();
-	}
-	@Cacheable(value="bookCache", key="#orderId + 'test'")
-	@Transactional(readOnly=true)
-	public Order getOrderFromId(int orderId){
-		return bookDao.getOrderFromId(orderId);
+	public Collection<Book> getAllBooks(){
+		return bookDao.getBooks();
 	}
 	@CacheEvict(value="bookCache",allEntries=true)
 	@Transactional

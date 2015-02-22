@@ -15,11 +15,33 @@ import javax.servlet.http.HttpServletResponse;
 
 public class LoginFilter implements Filter {
 
-	private static final String[] LOGIN_URLS={"/login"};
+	private static final String[] LOGIN_REQUIRED={};
+	private static final String[] LOGIN_HINT={"/","/index"};
+	private static final String LOGIN_PAGE="login";
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		
+	}
+	
+	private boolean isLoggedin(HttpServletRequest httpRequest){
+		if(httpRequest.getCookies()==null){
+			return false;
+		}
+		String username = "";
+		String auth = "";
+		for(Cookie cookie:httpRequest.getCookies()){
+			if(cookie.getName().equals("username")){
+				username = cookie.getValue();
+			}else if(cookie.getName().equals("auth")){
+				auth = cookie.getValue().replace("encrypt", "");
+			}
+		}
+		if(username.length()>0&&username.equals(auth)){
+			httpRequest.setAttribute("username", username);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -27,32 +49,23 @@ public class LoginFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
-		if(Arrays.asList(LOGIN_URLS).contains(httpRequest.getRequestURI())&&httpRequest.getCookies()!=null){
-			String username = "";
-			String auth = "";
-			for(Cookie cookie:httpRequest.getCookies()){
-				if(cookie.getName().equals("username")){
-					username = cookie.getValue();
-				}else if(cookie.getName().equals("auth")){
-					auth = cookie.getValue().replace("encrypt", "");
+		
+		if(LOGIN_PAGE.equals(httpRequest.getRequestURI())){
+			if(isLoggedin(httpRequest)){
+				String fromURL = request.getParameter("fromurl");
+				if(fromURL==null||fromURL==""){
+					fromURL="index";
 				}
+				httpResponse.sendRedirect(fromURL);
+				return;
 			}
-			if(username.length()>0&&username.equals(auth)){
-				httpRequest.setAttribute("username", username);
-				if(httpRequest.getRequestURI().equals("/login")){
-					String fromURL = request.getParameter("fromurl");
-					if(fromURL==null||fromURL==""){
-						fromURL="index";
-					}
-					httpResponse.sendRedirect(fromURL);
-					return;
-				}
-			}else{
-				if(!httpRequest.getRequestURI().equals("/login")){
-					httpResponse.sendRedirect("login?fromurl="+httpRequest.getRequestURI());
-					return;
-				}
+		}else if(Arrays.asList(LOGIN_REQUIRED).contains(httpRequest.getRequestURI())){
+			if(!isLoggedin(httpRequest)){
+				httpResponse.sendRedirect("login?fromurl="+httpRequest.getRequestURI());
+				return;
 			}
+		}else if(Arrays.asList(LOGIN_HINT).contains(httpRequest.getRequestURI())){
+			isLoggedin(httpRequest);
 		}
 		chain.doFilter(request, response);
 	}

@@ -4,6 +4,13 @@
 
 <mapper namespace="com.nxm.bookstore.dao.IBookDao">
 
+	<select id="getBookById" resultType="Book">
+		select id,name,author,price,description from book where id = #{id}
+	</select>
+	<select id="getBooks" resultType="Book">
+		select id,name,author,price from book
+	</select>
+	
 	<resultMap id="orderResult" type="Order">
 		<collection property="books" column="id" ofType="Book"
 			select="selectBooksForOrder" />

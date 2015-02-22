@@ -4,6 +4,9 @@ height: 30px;
 line-height: 30px;
 background: #F1F1F1;
 }
+.fl {
+float: left;
+}
 .fr {
 float: right;
 }

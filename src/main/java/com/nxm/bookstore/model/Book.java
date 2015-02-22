@@ -4,6 +4,8 @@ public class Book {
 	private int id;
 	private String name;
 	private String author;
+	private double price;
+	private String description;
 	public int getId() {
 		return id;
 	}
@@ -21,6 +23,18 @@ public class Book {
 	}
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public String toString(){
 		return name;

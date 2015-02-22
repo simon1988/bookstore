@@ -8,8 +8,8 @@
 		select id,name,password,email,balance from customer where name = #{name}
 	</select>
 	
-	<insert id="registerNewCustomer" useGeneratedKeys="true" keyProperty="id">
-		insert into customer(name,password,email) values(#{name},#{password},#{email})
+	<insert id="registerNewCustomer">
+		insert into customer(name,password,email) values(#{customer.name},#{customer.password},#{customer.email})
 	</insert>
 
 </mapper>

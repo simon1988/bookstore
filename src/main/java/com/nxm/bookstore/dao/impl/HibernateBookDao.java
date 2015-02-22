@@ -39,4 +39,16 @@ public class HibernateBookDao implements IBookDao {
 
 	}
 
+	@Override
+	public Book getBookById(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<Book> getBooks() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
