@@ -31,6 +31,17 @@
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
+    
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="defaultErrorView" value="error"></property>
+		<property name="exceptionAttribute" value="ex"></property>
+		<property name="exceptionMappings">
+			<props>
+				<!-- <prop key="cn.basttg.core.exception.BusinessException">error-business</prop> -->
+			</props>
+		</property>
+	</bean>
+    
 
 
 </beans>

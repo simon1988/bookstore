@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS orders__books;
 
 
-create table customer (id int not null primary key auto_increment, name varchar(20) not null, password char(32) not null, email varchar(30), balance double default 100);
+create table customer (id int not null primary key auto_increment, name varchar(20) not null unique, password char(32) not null, email varchar(30), balance double default 100);
 insert into customer(name,password,email) values('simon','B30BD351371C686298D32281B337E8E9','simon@163.com');
 
 create table books (id int not null primary key auto_increment, name varchar(100) not null, author varchar(20), price double, description text);

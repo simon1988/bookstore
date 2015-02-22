@@ -27,7 +27,7 @@ public class LoginFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
-		if(Arrays.asList(LOGIN_URLS).contains(httpRequest.getRequestURI())){
+		if(Arrays.asList(LOGIN_URLS).contains(httpRequest.getRequestURI())&&httpRequest.getCookies()!=null){
 			String username = "";
 			String auth = "";
 			for(Cookie cookie:httpRequest.getCookies()){

@@ -1,5 +1,9 @@
 package com.nxm.bookstore.dao.impl;
 
+public class JdbcBookDao{
+	
+}
+/*
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -72,3 +76,30 @@ public class JdbcBookDao extends JdbcDaoSupport implements IBookDao {
 	}
 
 }
+public class BookRowMapper implements RowMapper<Book> {
+
+	@Override
+	public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
+		Book book = new Book();
+		book.setId(rs.getInt("id"));
+		book.setName(rs.getString("name"));
+		book.setAuthor(rs.getString("author"));
+		return book;
+	}
+
+}
+public class OrderRowMapper implements RowMapper<Order> {
+	@Override
+	public Order mapRow(ResultSet rs, int rowNum) throws SQLException {
+		Order order = new Order();
+		order.setId(rs.getInt("orders.id"));
+		order.setOrderDate(rs.getTimestamp("order_date"));
+		Customer customer = new Customer();
+		customer.setId(rs.getInt("customer.id"));
+		customer.setName(rs.getString("customer.name"));
+		customer.setAddress(rs.getString("customer.address"));
+		order.setCustomer(customer);
+		return order;
+	}
+}
+*/

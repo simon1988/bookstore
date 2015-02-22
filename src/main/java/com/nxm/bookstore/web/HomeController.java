@@ -18,23 +18,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nxm.bookstore.model.Order;
 import com.nxm.bookstore.service.BookService;
-import com.nxm.bookstore.util.MD5Util;
+import com.nxm.bookstore.service.CustomerService;
 
 @Controller
 public class HomeController {
 	static Logger logger=Logger.getLogger(HomeController.class);
 	
 	@Autowired
-	BookService bookservice;
+	CustomerService customerService;
+	@Autowired
+	BookService bookService;
 
 	@RequestMapping("/index")
 	public String index(){
 		return "index";
-	}
-	
-	@RequestMapping("/tmp")
-	public String tmp(){
-		return "tmp";
 	}
 	
 	@RequestMapping("/login")
@@ -47,7 +44,7 @@ public class HomeController {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String fromURL = request.getParameter("fromurl");
-		if(username.equals(password)){
+		if(customerService.verifyPassword(username, password)){
 			//write to cookie
 			Cookie cookie = new Cookie("username", username);
 			cookie.setPath("/");
@@ -75,13 +72,13 @@ public class HomeController {
 	@RequestMapping("/booklist")
 	public String showHomePage(Map<String,Object> model){
 		model.put("owner", "Mr Niu");
-		model.put("all_orders", bookservice.getAllOrders());
+		model.put("all_orders", bookService.getAllOrders());
 		return "welcome";
 	}
 	
 	@RequestMapping("/ajax/getAllOrders.do")
 	public @ResponseBody Collection<Order> getAllOrders(){
-		return bookservice.getAllOrders();
+		return bookService.getAllOrders();
 	}
 	
 	@RequestMapping(value="/user/{userId}/roles/{roleId}",method = RequestMethod.GET)  
@@ -90,5 +87,15 @@ public class HomeController {
         System.out.println("User Id : " + userId);  
         System.out.println("Role Id : " + roleId);  
         return "hello";  
-    } 
+    }
+	
+	@RequestMapping("/error")
+	public String error(){
+		return "error";
+	}
+	
+	@RequestMapping("/error/404")
+	public String error404(){
+		return "404";
+	}
 }
