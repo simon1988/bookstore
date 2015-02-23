@@ -8,19 +8,21 @@
 	   	</ul>
     	<ul class="fr">
    	    <li class="fore1">
-   	    	<c:if test="${username==null}"><a href="/login">Login</a></c:if>
-	   	    <c:if test="${username!=null}">Welcome, ${username}</c:if>
+   	    	<c:if test="${username==null}"><a href="/login?fromurl=${currentURI}">Login</a></c:if>
+	   	    <c:if test="${username!=null}">Welcome, <a href="/user/${username}">${username}</a></c:if>
 	   	</li>
-	   	<li class="fore2">
-	   	    <a href="/register">Register</a>
-   	    </li>
+	   	<c:if test="${username==null}">
+		   	<li class="fore2">
+		   	    <a href="/register">Register</a>
+	   	    </li>
+   	    </c:if>
         <li class="spacer"></li>
 	    <li class="fore3">
-            <a href="/orders">My Orders</a>
+            <a href="/orders/${username}">My Orders</a>
         </li>
         <li class="spacer"></li>
 	    <li class="fore4">
-            <a href="/cart">My Cart</a>
+            <a href="/cart/${username}">My Cart</a>
         </li>
     	</ul>
     </div>

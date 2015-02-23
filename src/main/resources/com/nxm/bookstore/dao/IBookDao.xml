@@ -7,23 +7,48 @@
 	<select id="getBookById" resultType="Book">
 		select id,name,author,price,description from book where id = #{id}
 	</select>
+	
 	<select id="getBooks" resultType="Book">
 		select id,name,author,price from book
 	</select>
-	
+
+	<select id="getOrdersByCustomerId" resultMap="orderResult">
+		select a.id a_id, a.order_date, b.id b_id, b.name, b.author, b.price, c.id c_id, c.name c_name, c.email email 
+		from orders a inner join orders__books d inner join book b inner join customer c 
+		on a.id=d.order_id and d.book_id= b.id and a.customer_id=c.id
+		where a.customer_id=#{id}
+	</select>
 	<resultMap id="orderResult" type="Order">
-		<collection property="books" column="id" ofType="Book"
-			select="selectBooksForOrder" />
+		<id property="id" column="a_id"/>
+		<result property="orderDate"   column="order_date"/>
+		<association property="customer" javaType="Customer">
+			<id property="id" column="b_id"/>
+			<result property="name"   column="c_name"/>
+			<result property="email"  column="email"/>
+		</association>
+		<collection property="books" ofType="Book">
+			<id property="id" column="b_id"/>
+			<result property="name"   column="name"/>
+			<result property="author" column="author"/>
+			<result property="price"  column="price"/>
+		</collection>
 	</resultMap>
+	<insert id="generateOrderId" useGeneratedKeys="true" keyProperty="order.id">
+		insert into orders(customer_id) values(#{order.customer.id});
+	</insert>
+	<insert id="placeNewOrder">
+		insert into orders__books(order_id,book_id) values(#{o_id},#{b_id});
+	</insert>
 
-	<select id="getAllOrders" resultMap="orderResult">
-		select a.id, a.order_date as orderDate, b.id as "customer.id", b.name as
-		"customer.name", b.address as "customer.address" from orders a inner
-		join customer b on a.customer_id=b.id
+	<select id="getCartBooks" resultType="Book">
+		select id,name,author,price
+		from cart a inner join book b on a.book_id = b.id
+		where a.customer_id = #{c_id}
 	</select>
-	<select id="selectBooksForOrder" parameterType="int" resultType="Book">
-		select id, name, author from orders__books a inner join books b on
-		a.book_id = b.id where a.order_id= #{id}
-	</select>
-
+	<insert id="addBookToCart">
+		insert into cart(customer_id,book_id) values(#{c_id},#{b_id})
+	</insert>
+	<delete id="deleteBookFromCart">
+		delete from cart where customer_id=#{c_id} and book_id=#{b_id}
+	</delete>
 </mapper>

@@ -11,5 +11,9 @@
 	<insert id="registerNewCustomer">
 		insert into customer(name,password,email) values(#{customer.name},#{customer.password},#{customer.email})
 	</insert>
+	
+	<update id="updateCustomerBalance">
+		update customer set balance=#{balance} where name=#{name}
+	</update>
 
 </mapper>

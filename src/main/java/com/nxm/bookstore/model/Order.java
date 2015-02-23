@@ -32,6 +32,14 @@ public class Order {
 	public void setBooks(Set<Book> books) {
 		this.books = books;
 	}
+	public double getTotalPrice(){
+		double res = 0;
+		if(books!=null)
+		for(Book book : books){
+			res = res + book.getPrice();
+		}
+		return res;
+	}
 	public String toString(){
 		return id+"\t"+customer.getName()+"\t"+orderDate+"\t"+books;
 	}

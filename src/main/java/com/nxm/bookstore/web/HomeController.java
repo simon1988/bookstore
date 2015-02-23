@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nxm.bookstore.model.Book;
 import com.nxm.bookstore.service.BookService;
@@ -73,6 +74,12 @@ public class HomeController {
 		return "register";
 	}
 	
+	@RequestMapping("/user/{username}")
+	public String user(@PathVariable("username") String username, Model model){
+		model.addAttribute("customer", customerService.getCustomerByName(username));
+		return "user";
+	}
+	
 	@RequestMapping("/register.do")
 	public void registerDo(HttpServletRequest request, HttpServletResponse response){
 		String username = request.getParameter("username");
@@ -85,25 +92,43 @@ public class HomeController {
 			e.printStackTrace();
 		}
 	}
-	/*
-	@RequestMapping("/booklist")
-	public String showHomePage(Map<String,Object> model){
-		model.put("owner", "Mr Niu");
-		model.put("all_orders", bookService.getAllOrders());
-		return "welcome";
-	}
-	
-	@RequestMapping("/ajax/getAllOrders.do")
-	public @ResponseBody Collection<Order> getAllOrders(){
-		return bookService.getAllOrders();
-	}
-	*/
 	@RequestMapping(value="/book/{bookId}",method = RequestMethod.GET)  
     public String getLogin(@PathVariable("bookId") int bookId, Model model){  
         Book book = bookService.getBookById(bookId);
         model.addAttribute("book",book);
         return "book";  
     }
+
+	@RequestMapping("/orders/{username}")
+	public String orders(@PathVariable("username") String username, Model model){
+		model.addAttribute("orders", bookService.getOrdersByCustomerName(username));
+		return "orders";
+	}
+	@RequestMapping("/placeNewOrder/{username}")
+	public @ResponseBody String placeNewOrder(@PathVariable("username") String username){
+		return bookService.placeNewOrder(username);
+	}
+
+	@RequestMapping("/addToCart/{username}/{bookId}")
+	public @ResponseBody String addToCart(@PathVariable("username") String username, @PathVariable("bookId") int bookId){
+		if(bookService.addBookToCart(username, bookId)){
+			return "Success";
+		}else{
+			return "Item already exists in cart!";
+		}
+	}
+
+	@RequestMapping("/deleteFromCart/{username}/{bookId}")
+	public @ResponseBody String deleteFromCart(@PathVariable("username") String username, @PathVariable("bookId") int bookId){
+		bookService.deleteBookFromCart(username, bookId);
+		return "Success";
+	}
+
+	@RequestMapping("/cart/{username}")
+	public String cart(@PathVariable("username") String username, Model model){
+		model.addAttribute("cart", bookService.getCartBooks(username));
+		return "cart";
+	}
 	
 	@RequestMapping("/error")
 	public String error(){

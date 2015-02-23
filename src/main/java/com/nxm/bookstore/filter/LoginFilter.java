@@ -1,7 +1,6 @@
 package com.nxm.bookstore.filter;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -13,11 +12,13 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.nxm.bookstore.util.RegexUtil;
+
 public class LoginFilter implements Filter {
 
-	private static final String[] LOGIN_REQUIRED={};
-	private static final String[] LOGIN_HINT={"/","/index"};
-	private static final String LOGIN_PAGE="login";
+	private static final String[] LOGIN_REQUIRED={"/orders/*","/cart/*"};
+	private static final String[] LOGIN_HINT={"/","/index","/book/.*"};
+	private static final String LOGIN_PAGE="/login";
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -59,14 +60,15 @@ public class LoginFilter implements Filter {
 				httpResponse.sendRedirect(fromURL);
 				return;
 			}
-		}else if(Arrays.asList(LOGIN_REQUIRED).contains(httpRequest.getRequestURI())){
+		}else if(RegexUtil.matchAny(httpRequest.getRequestURI(), LOGIN_REQUIRED)){
 			if(!isLoggedin(httpRequest)){
-				httpResponse.sendRedirect("login?fromurl="+httpRequest.getRequestURI());
+				httpResponse.sendRedirect("/login?fromurl=index");
 				return;
 			}
-		}else if(Arrays.asList(LOGIN_HINT).contains(httpRequest.getRequestURI())){
+		}else if(RegexUtil.matchAny(httpRequest.getRequestURI(), LOGIN_HINT)){
 			isLoggedin(httpRequest);
 		}
+		httpRequest.setAttribute("currentURI", httpRequest.getRequestURI());
 		chain.doFilter(request, response);
 	}
 

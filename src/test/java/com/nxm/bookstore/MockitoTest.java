@@ -15,9 +15,10 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class MockitoTest {
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testMock(){
-		List mockedList = mock(List.class);
+		List<String> mockedList = (List<String>)mock(List.class);
 		
 		mockedList.add("one");
 		mockedList.add("two");

@@ -2,24 +2,29 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <html>
 <head>
-    <title>Bookstore</title>
+    <title>${username}'s orders</title>
     <link type="text/css" rel="stylesheet" href="/resources/style/bookstore.css">
 </head>
 <body>
 <%@ include file="header.jsp"%>
 <table>
-	<c:forEach var="book" items="${books}">
+	<c:forEach var="order" items="${orders}">
 		<tr>
 		<td>
-			<a href="/book/${book.id}">${book.name}</a>
+			${order.id}
+		<td>
+		<c:forEach var="book" items="${order.books}">
+			<a href="/book/${book.id}">${book.name}</a><br>
+		</c:forEach>
 		</td>
 		<td>
-			${book.author}
+			<fmt:formatDate value="${order.orderDate}" pattern="yyyy-MM-dd hh:mm:ss" />
 		</td>
 		<td>
-			${book.price}
+			$${order.getTotalPrice()}
 		</td>
 		</tr>
 	</c:forEach>

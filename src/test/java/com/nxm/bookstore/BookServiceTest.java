@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nxm.bookstore.model.Book;
+import com.nxm.bookstore.model.Order;
 import com.nxm.bookstore.service.BookService;
 
 @ContextConfiguration(locations = {"classpath:spring/applicationContext-test.xml"})
@@ -21,8 +22,20 @@ public class BookServiceTest {
 	private BookService bookService;
 	@Test
 	@Transactional
-	public void TestPlaceNewOrder(){
+	public void TestBooksOrders(){
 		Collection<Book> books = bookService.getAllBooks();
 		logger.info(books);
+		Collection<Order> orders = bookService.getOrdersByCustomerName("simon");
+		logger.info(orders);
+	}
+	@Test
+	@Transactional
+	public void TestCart(){
+		bookService.addBookToCart("simon", 1);
+		bookService.addBookToCart("simon", 2);
+		bookService.deleteBookFromCart("simon", 1);
+		Collection<Book> books = bookService.getCartBooks("simon");
+		logger.info(books);
+		bookService.placeNewOrder("simon");
 	}
 }

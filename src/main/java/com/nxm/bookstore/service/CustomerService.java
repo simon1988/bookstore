@@ -19,7 +19,6 @@ public class CustomerService {
 	@Autowired
 	private ICustomerDao customerDao;
 	
-	@Cacheable(value="customerCache")
 	@Transactional(readOnly=true)
 	public boolean verifyPassword(String username, String password){
 		Customer customer = customerDao.getCustomerByName(username);
@@ -29,7 +28,18 @@ public class CustomerService {
 		return false;
 	}
 	
-	@CacheEvict(value="customerCache",allEntries=true)
+	@Cacheable(value="customerCache", key="#username")
+	@Transactional(readOnly=true)
+	public Customer getCustomerByName(String username){
+		Customer customer = customerDao.getCustomerByName(username);
+		return customer;
+	}
+	
+	@CacheEvict(value="customerCache", key="#username")
+	public void updateCustomerBalance(String username, double balance){
+		customerDao.updateCustomerBalance(username, balance);
+	}
+	
 	@Transactional
 	public boolean registerNewCustomer(String username,String password,String email){
 		if(customerDao.getCustomerByName(username)!=null){

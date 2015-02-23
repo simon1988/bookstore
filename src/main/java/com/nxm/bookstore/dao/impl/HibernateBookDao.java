@@ -1,7 +1,6 @@
 package com.nxm.bookstore.dao.impl;
 
 import java.util.Collection;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
@@ -19,29 +18,11 @@ public class HibernateBookDao implements IBookDao {
 	
 	@Autowired
     private SessionFactory sessionFactory;
-	
-	@Override
-	public Collection<Order> getAllOrders() {
-		logger.info(sessionFactory.getCurrentSession().get(Customer.class, 1));
-		logger.info(sessionFactory.getCurrentSession().get(Book.class, 1));
-		return null;
-	}
-
-	@Override
-	public Order getOrderFromId(int orderId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void placeNewOrder(Customer c, Set<Book> books) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public Book getBookById(int id) {
-		// TODO Auto-generated method stub
+		logger.info(sessionFactory.getCurrentSession().get(Customer.class, 1));
+		logger.info(sessionFactory.getCurrentSession().get(Book.class, 1));
 		return null;
 	}
 
@@ -49,6 +30,42 @@ public class HibernateBookDao implements IBookDao {
 	public Collection<Book> getBooks() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Collection<Order> getOrdersByCustomerId(int customerId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addBookToCart(int customerId, int bookid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteBookFromCart(int customerId, int bookid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Collection<Book> getCartBooks(int customerId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void placeNewOrder(int orderId, int bookId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int generateOrderId(Order order) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
