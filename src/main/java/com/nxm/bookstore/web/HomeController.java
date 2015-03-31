@@ -39,7 +39,7 @@ public class HomeController {
 		return "login";
 	}
 	
-	@RequestMapping("/login.do")
+	@RequestMapping("/doLogin")
 	public void loginDo(HttpServletRequest request, HttpServletResponse response){
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -80,7 +80,7 @@ public class HomeController {
 		return "user";
 	}
 	
-	@RequestMapping("/register.do")
+	@RequestMapping("/doRegister")
 	public void registerDo(HttpServletRequest request, HttpServletResponse response){
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -104,13 +104,16 @@ public class HomeController {
 		model.addAttribute("orders", bookService.getOrdersByCustomerName(username));
 		return "orders";
 	}
+	
 	@RequestMapping("/placeNewOrder/{username}")
-	public @ResponseBody String placeNewOrder(@PathVariable("username") String username){
+	@ResponseBody
+	public String placeNewOrder(@PathVariable("username") String username){
 		return bookService.placeNewOrder(username);
 	}
 
 	@RequestMapping("/addToCart/{username}/{bookId}")
-	public @ResponseBody String addToCart(@PathVariable("username") String username, @PathVariable("bookId") int bookId){
+	@ResponseBody
+	public String addToCart(@PathVariable("username") String username, @PathVariable("bookId") int bookId){
 		if(bookService.addBookToCart(username, bookId)){
 			return "Success";
 		}else{
@@ -119,7 +122,8 @@ public class HomeController {
 	}
 
 	@RequestMapping("/deleteFromCart/{username}/{bookId}")
-	public @ResponseBody String deleteFromCart(@PathVariable("username") String username, @PathVariable("bookId") int bookId){
+	@ResponseBody
+	public String deleteFromCart(@PathVariable("username") String username, @PathVariable("bookId") int bookId){
 		bookService.deleteBookFromCart(username, bookId);
 		return "Success";
 	}

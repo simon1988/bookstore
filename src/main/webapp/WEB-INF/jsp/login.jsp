@@ -7,7 +7,7 @@
 <title>Login page</title>
 </head>
 <body>
-<form action="/login.do?fromurl=${param.fromurl}" method="post">  
+<form action="/doLogin?fromurl=${param.fromurl}" method="post">  
        username: <input type="text" name="username" id="username"><br>  
        password: <input type="password" name="password" id="password"><br>  
        <input type="submit" value="Login">  

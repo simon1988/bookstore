@@ -21,7 +21,7 @@
     
     <mvc:annotation-driven/>
     <!--  all resources inside folder src/main/webapp/resources are mapped so they can be refered to inside JSP files -->
-    <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <mvc:resources mapping="/resources/**" location="/resources/" cache-period="604800"/>
     
     <mvc:view-controller path="/" view-name="index" />
     

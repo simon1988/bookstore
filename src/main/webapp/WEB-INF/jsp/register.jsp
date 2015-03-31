@@ -7,7 +7,7 @@
 <title>register</title>
 </head>
 <body>
-<form action="/register.do" method="post">  
+<form action="/doRegister" method="post">  
        username: <input type="text" name="username" id="username"><br>
        password: <input type="password" name="password" id="password"><br>
        email: <input type="email" name="email" id="email"><br>
