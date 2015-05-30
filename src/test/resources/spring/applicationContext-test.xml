@@ -28,9 +28,7 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
 		p:dataSource-ref="dataSource" />
 
-	<bean id="customerService" class="com.nxm.bookstore.service.CustomerService"></bean>
-	<bean id="bookService" class="com.nxm.bookstore.service.BookService"></bean>
-
+	<context:component-scan base-package="com.nxm.bookstore.service" />
 
 	<!-- define the SqlSessionFactory -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

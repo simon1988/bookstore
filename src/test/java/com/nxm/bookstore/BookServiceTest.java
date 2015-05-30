@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nxm.bookstore.model.Book;
 import com.nxm.bookstore.model.Order;
 import com.nxm.bookstore.service.BookService;
+import com.nxm.bookstore.service.QRService;
 
 @ContextConfiguration(locations = {"classpath:spring/applicationContext-test.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -20,6 +21,8 @@ public class BookServiceTest {
 	static Logger logger = Logger.getLogger(BookServiceTest.class);
 	@Autowired
 	private BookService bookService;
+	@Autowired
+	private QRService qrService;
 	@Test
 	@Transactional
 	public void TestBooksOrders(){
@@ -37,5 +40,9 @@ public class BookServiceTest {
 		Collection<Book> books = bookService.getCartBooks("simon");
 		logger.info(books);
 		bookService.placeNewOrder("simon");
+	}
+	@Test
+	public void TestQRGenerate(){
+		System.out.println(qrService.generateQRImage("http://www.baidu.com"));
 	}
 }

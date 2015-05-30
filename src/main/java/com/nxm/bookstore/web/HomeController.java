@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.nxm.bookstore.model.Book;
 import com.nxm.bookstore.service.BookService;
 import com.nxm.bookstore.service.CustomerService;
+import com.nxm.bookstore.service.QRService;
 
 @Controller
 public class HomeController {
@@ -27,6 +29,8 @@ public class HomeController {
 	CustomerService customerService;
 	@Autowired
 	BookService bookService;
+	@Autowired
+	QRService qrService;
 
 	@RequestMapping(value={"/","/index"})
 	public String index(Model model){
@@ -142,5 +146,12 @@ public class HomeController {
 	@RequestMapping("/error/404")
 	public String error404(){
 		return "404";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/qrcode", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	public byte[] qrcode() throws IOException {
+		byte[] qrpic = qrService.generateQRImage("http://www.baidu.com");
+	    return qrpic;
 	}
 }
