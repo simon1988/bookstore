@@ -3,6 +3,7 @@ package com.nxm.bookstore;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ public class BookServiceTest {
 		bookService.placeNewOrder("simon");
 	}
 	@Test
+	@Ignore
 	public void TestQRGenerate(){
 		System.out.println(qrService.generateQRImage("http://www.baidu.com"));
 	}

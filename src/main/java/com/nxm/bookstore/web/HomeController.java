@@ -6,6 +6,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -60,7 +61,7 @@ public class HomeController {
 			response.addCookie(cookie);
 			
 			logger.info("fromurl:"+fromURL);
-			if(fromURL==null||fromURL==""){
+			if(StringUtils.isBlank(fromURL)){
 				fromURL="index";
 			}
 		}else{
