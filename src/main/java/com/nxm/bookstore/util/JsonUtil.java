@@ -1,14 +1,17 @@
 package com.nxm.bookstore.util;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-public class JsonUtils {
-	private static Logger logger=Logger.getLogger(JsonUtils.class);
+public class JsonUtil {
+	private static Logger logger=Logger.getLogger(JsonUtil.class);
 	private static ObjectMapper mapper = new ObjectMapper();
 	
 	public static String objectToJson(Object object) {
@@ -31,6 +34,17 @@ public class JsonUtils {
 			logger.error("parse json string error:" + jsonString, e);
 			return null;
 		}
+	}
+	
+	public static JsonNode readTree(String jsonString){
+		try {
+			return mapper.readTree(jsonString);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@SuppressWarnings("unchecked")
