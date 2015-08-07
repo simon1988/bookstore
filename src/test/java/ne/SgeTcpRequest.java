@@ -34,7 +34,7 @@ class SgeTcpHead {
 	@XmlElement(name = "h_exch_code")
 	private String adapter;
 	@XmlElement(name = "h_bank_no")
-	private String bankId;
+	private String bankNumber;
 	@XmlElement(name = "h_term_type")
 	private String termType;
 	@XmlElement(name = "h_teller_id")
@@ -49,17 +49,33 @@ class SgeTcpHead {
 	private String workDate;
 	@XmlElement(name = "h_exch_date")
 	private String exchangeDate;
+	
+	@XmlElement(name = "h_user_id")
+	private String userId;
+	@XmlElement(name = "h_branch_id")
+	private String branchId;
+	@XmlElement(name = "h_fact_date")
+	private String factDate;
+	@XmlElement(name = "h_fact_time")
+	private String factTime;
+	@XmlElement(name = "h_serial_no")
+	private String serialNumber;
+	@XmlElement(name = "h_rsp_code")
+	private String rspCode;
+	@XmlElement(name = "h_rsp_msg")
+	private String rspMessage;
+	
 	public String getAdapter() {
 		return adapter;
 	}
 	public void setAdapter(String adapter) {
 		this.adapter = adapter;
 	}
-	public String getBankId() {
-		return bankId;
+	public String getBankNumber() {
+		return bankNumber;
 	}
-	public void setBankId(String bankId) {
-		this.bankId = bankId;
+	public void setBankNumber(String bankNumber) {
+		this.bankNumber = bankNumber;
 	}
 	public String getTermType() {
 		return termType;
@@ -103,6 +119,48 @@ class SgeTcpHead {
 	public void setExchangeDate(String exchangeDate) {
 		this.exchangeDate = exchangeDate;
 	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getBranchId() {
+		return branchId;
+	}
+	public void setBranchId(String branchId) {
+		this.branchId = branchId;
+	}
+	public String getFactDate() {
+		return factDate;
+	}
+	public void setFactDate(String factDate) {
+		this.factDate = factDate;
+	}
+	public String getFactTime() {
+		return factTime;
+	}
+	public void setFactTime(String factTime) {
+		this.factTime = factTime;
+	}
+	public String getSerialNumber() {
+		return serialNumber;
+	}
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+	public String getRspCode() {
+		return rspCode;
+	}
+	public void setRspCode(String rspCode) {
+		this.rspCode = rspCode;
+	}
+	public String getRspMessage() {
+		return rspMessage;
+	}
+	public void setRspMessage(String rspMessage) {
+		this.rspMessage = rspMessage;
+	}
 	
 }
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -110,6 +168,10 @@ class SgeTcpHead {
 class SgeTcpRecord {
 	@XmlElement(name = "branch_id")
 	private String branchId;
+	@XmlElement(name = "user_pwd")
+	private String userPassword;
+	@XmlElement(name = "login_ip")
+	private String loginIp;
 
 	public String getBranchId() {
 		return branchId;
@@ -117,5 +179,21 @@ class SgeTcpRecord {
 
 	public void setBranchId(String branchId) {
 		this.branchId = branchId;
+	}
+
+	public String getUserPassword() {
+		return userPassword;
+	}
+
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
+	}
+
+	public String getLoginIp() {
+		return loginIp;
+	}
+
+	public void setLoginIp(String loginIp) {
+		this.loginIp = loginIp;
 	}
 }
