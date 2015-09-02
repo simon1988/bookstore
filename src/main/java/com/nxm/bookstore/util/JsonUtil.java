@@ -55,6 +55,7 @@ public class JsonUtil {
 		String json = objectToJson(map);
 		System.out.println(json);
 		map = jsonToObject(json,Map.class);
-		System.out.println(map.get("retCode"));
+		int retCode = (Integer)map.get("retCode");
+		System.out.println(retCode);
 	}
 }
