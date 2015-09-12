@@ -2,7 +2,8 @@ package com.nxm.bookstore.service;
 
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,7 +17,7 @@ import com.nxm.bookstore.model.Order;
 
 @Service
 public class BookService {
-	static Logger logger=Logger.getLogger(BookService.class);
+	private static Logger logger=LoggerFactory.getLogger(BookService.class);
 	@Autowired
 	private CustomerService customerService;
 	@Autowired
@@ -71,12 +72,19 @@ public class BookService {
 	@CacheEvict(value="bookCache", key="'cart-'+#username")
 	@Transactional
 	public boolean addBookToCart(String username, int bookId){
-		for(Book book : bookDao.getCartBooks(customerService.getCustomerByName(username).getId())){
+		Customer customer = customerService.getCustomerByName(username);
+		if(customer==null){
+			logger.info("customer {} not exists in db.", username);
+			return false;
+		}
+		int userId = customer.getId();
+		for(Book book : bookDao.getCartBooks(userId)){
 			if(book.getId()==bookId){
+				logger.info("book {} already exists in cart.", bookId);
 				return false;
 			}
 		}
-		bookDao.addBookToCart(customerService.getCustomerByName(username).getId(), bookId);
+		bookDao.addBookToCart(userId, bookId);
 		return true;
 	}
 	@CacheEvict(value="bookCache", key="'cart-'+#username")

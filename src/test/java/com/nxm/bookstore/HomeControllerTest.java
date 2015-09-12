@@ -2,7 +2,6 @@ package com.nxm.bookstore;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import com.nxm.bookstore.web.HomeController;
 @ContextConfiguration(locations = {"classpath:spring/applicationContext-test.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class HomeControllerTest {
-	static Logger logger = Logger.getLogger(HomeControllerTest.class);
 	@Autowired
 	private HomeController controller;
 	@Autowired

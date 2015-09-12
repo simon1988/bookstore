@@ -2,9 +2,11 @@ package com.nxm.bookstore.util;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;
+
 import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.TestContext;
@@ -12,7 +14,7 @@ import org.springframework.test.context.support.AbstractTestExecutionListener;
 import org.springframework.util.Assert;
 
 public class ExecuteSqlScriptsTestExecutionListener extends AbstractTestExecutionListener {
-	static Logger logger = Logger.getLogger(ExecuteSqlScriptsTestExecutionListener.class);
+	private static Logger logger=LoggerFactory.getLogger(ExecuteSqlScriptsTestExecutionListener.class);
 	@Override
 	public void beforeTestMethod(TestContext testContext) throws Exception {
 		final Method testMethod = testContext.getTestMethod();

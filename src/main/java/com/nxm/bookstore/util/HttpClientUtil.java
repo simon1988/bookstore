@@ -24,10 +24,11 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HttpClientUtil {
-	private static Logger logger = Logger.getLogger(HttpClientUtil.class);
+	private static Logger logger=LoggerFactory.getLogger(HttpClientUtil.class);
 
 	public static String sendGet(String url, int connectTimeout, int readTimeout) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();

@@ -1,6 +1,5 @@
 package com.nxm.bookstore;
 
-import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import com.nxm.bookstore.service.CustomerService;
 @ContextConfiguration(locations = {"classpath:spring/applicationContext-test.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CustomerServiceTest {
-	static Logger logger = Logger.getLogger(CustomerServiceTest.class);
 	@Autowired
 	private CustomerService customerService;
 	@Test

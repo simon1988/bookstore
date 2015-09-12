@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -29,7 +30,7 @@ import com.nxm.bookstore.service.QRService;
 
 @Controller
 public class HomeController {
-	static Logger logger=Logger.getLogger(HomeController.class);
+	private static Logger logger=LoggerFactory.getLogger(HomeController.class);
 	
 	@Autowired
 	CustomerService customerService;

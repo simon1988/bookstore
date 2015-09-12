@@ -5,13 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JsonUtil {
-	private static Logger logger=Logger.getLogger(JsonUtil.class);
+	private static Logger logger=LoggerFactory.getLogger(JsonUtil.class);
 	private static ObjectMapper mapper = new ObjectMapper();
 	
 	public static String objectToJson(Object object) {

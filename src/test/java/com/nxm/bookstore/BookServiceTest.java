@@ -2,10 +2,11 @@ package com.nxm.bookstore;
 
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -19,7 +20,7 @@ import com.nxm.bookstore.service.QRService;
 @ContextConfiguration(locations = {"classpath:spring/applicationContext-test.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BookServiceTest {
-	static Logger logger = Logger.getLogger(BookServiceTest.class);
+	private static Logger logger=LoggerFactory.getLogger(BookServiceTest.class);
 	@Autowired
 	private BookService bookService;
 	@Autowired
@@ -28,9 +29,9 @@ public class BookServiceTest {
 	@Transactional
 	public void TestBooksOrders(){
 		Collection<Book> books = bookService.getAllBooks();
-		logger.info(books);
+		logger.info("books:{}", books);
 		Collection<Order> orders = bookService.getOrdersByCustomerName("simon");
-		logger.info(orders);
+		logger.info("orders:{}", orders);
 	}
 	@Test
 	@Transactional
@@ -39,7 +40,7 @@ public class BookServiceTest {
 		bookService.addBookToCart("simon", 2);
 		bookService.deleteBookFromCart("simon", 1);
 		Collection<Book> books = bookService.getCartBooks("simon");
-		logger.info(books);
+		logger.info("books:{}", books);
 		bookService.placeNewOrder("simon");
 	}
 	@Test

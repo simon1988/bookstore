@@ -1,6 +1,7 @@
 package com.nxm.bookstore.service;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -14,7 +15,7 @@ import com.nxm.bookstore.util.MD5Util;
 @Service
 public class CustomerService {
 
-	static Logger logger=Logger.getLogger(CustomerService.class);
+	private static Logger logger=LoggerFactory.getLogger(CustomerService.class);
 	
 	@Autowired
 	private ICustomerDao customerDao;
@@ -43,6 +44,7 @@ public class CustomerService {
 	@Transactional
 	public boolean registerNewCustomer(String username,String password,String email){
 		if(customerDao.getCustomerByName(username)!=null){
+			logger.info("customer {} already exists", username);
 			return false;
 		}
 		Customer customer = new Customer();
