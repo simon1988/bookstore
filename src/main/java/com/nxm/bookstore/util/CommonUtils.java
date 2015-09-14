@@ -3,10 +3,13 @@ package com.nxm.bookstore.util;
 public class CommonUtils {
 	
 	public static boolean containsAny(String word, String keywords){
-		if(word==null||keywords==null){
+		return containsAny(word, keywords, ",");
+	}
+	public static boolean containsAny(String word, String keywords, String delimeter){
+		if(word==null||keywords==null||delimeter==null){
 			return false;
 		}
-		for(String keyword:keywords.split(",")){
+		for(String keyword:keywords.split(delimeter)){
 			if(word.contains(keyword.trim())){
 				return true;
 			}
@@ -15,10 +18,14 @@ public class CommonUtils {
 	}
 	
 	public static boolean inAny(String word, String keywords){
-		if(word==null||keywords==null){
+		return inAny(word, keywords, ",");
+	}
+	
+	public static boolean inAny(String word, String keywords, String delimeter){
+		if(word==null||keywords==null||delimeter==null){
 			return false;
 		}
-		for(String keyword:keywords.split(",")){
+		for(String keyword:keywords.split(delimeter)){
 			if(word.trim().equals(keyword.trim())){
 				return true;
 			}

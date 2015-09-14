@@ -1,5 +1,8 @@
 package com.nxm.bookstore.aop;
 
+import java.text.MessageFormat;
+import java.util.Arrays;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -37,4 +40,21 @@ public class LoggingAdvice {
 		logger.trace("Takes " + (System.currentTimeMillis() - msBefore) + " ms to execute");
 		return result;
 	}
+	
+	@Around("call(* org.slf4j.Logger.debug(..))")
+    public Object encryptLog (ProceedingJoinPoint thisJoinPoint) throws Throwable{
+         Object[] arguments = thisJoinPoint.getArgs();
+         if(arguments[0] instanceof String){
+             String encryptedLog = encryptLogMessage ((String) arguments[0], arguments.length > 1 ? Arrays.copyOfRange(arguments, 1, arguments.length) : null);
+            arguments[0] = encryptedLog;
+         }
+
+        return thisJoinPoint.proceed(arguments);
+    }
+    private final String encryptLogMessage (String message, Object... args){
+        if(args != null){
+            return MessageFormat.format(message, args);
+        }
+        return message;
+    }
 }

@@ -1,12 +1,10 @@
 package com.nxm.bookstore.util;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +17,7 @@ public class JsonUtil {
 		try {
 			return mapper.writeValueAsString(object);
 		} catch (Exception e) {
-			logger.warn("write to json string error:" + object, e);
+			logger.error("write to json string error:" + object, e);
 			return null;
 		}
 	}
@@ -31,7 +29,6 @@ public class JsonUtil {
 		try {
 			return mapper.readValue(jsonString, clazz);
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("parse json string error:" + jsonString, e);
 			return null;
 		}
@@ -40,10 +37,8 @@ public class JsonUtil {
 	public static JsonNode readTree(String jsonString){
 		try {
 			return mapper.readTree(jsonString);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			logger.error("read json tree error:" + jsonString, e);
 		}
 		return null;
 	}
