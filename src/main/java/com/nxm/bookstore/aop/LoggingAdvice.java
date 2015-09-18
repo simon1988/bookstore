@@ -41,7 +41,7 @@ public class LoggingAdvice {
 		return result;
 	}
 	
-	@Around("call(* org.slf4j.Logger.debug(..))")
+	@Around("execution(* org.slf4j.Logger.debug(..))")
     public Object encryptLog (ProceedingJoinPoint thisJoinPoint) throws Throwable{
          Object[] arguments = thisJoinPoint.getArgs();
          if(arguments[0] instanceof String){

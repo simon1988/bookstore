@@ -8,19 +8,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.JsonNode;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.nxm.bookstore.util.JsonUtil;
 
 @RunWith(JUnit4.class)
 public class NjsTcpTest {
-
+	private static Logger logger=LoggerFactory.getLogger(NjsTcpTest.class);
 	private static Socket socket;
 	private static OutputStream osm;
 	private static InputStream ism;
@@ -134,10 +136,10 @@ public class NjsTcpTest {
 		System.out.println(result);
 		
 		JsonNode jsonNode = JsonUtil.readTree(result);
-		if(jsonNode.get("TOKEN")==null || StringUtils.isBlank(jsonNode.get("TOKEN").getTextValue())){
+		if(jsonNode.get("TOKEN")==null || StringUtils.isBlank(jsonNode.get("TOKEN").asText())){
 			Assert.fail("get token failed after login!");
 		}
-		return jsonNode.get("TOKEN").getTextValue();
+		return jsonNode.get("TOKEN").asText();
 	}
 	
 	@Test
