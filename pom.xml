@@ -76,6 +76,11 @@
 			<version>3.2.6</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka_2.10</artifactId>
+			<version>0.8.1.1</version>
+		</dependency>
+		<dependency>
 			<groupId>com.google.zxing</groupId>
 			<artifactId>core</artifactId>
 			<version>3.2.0</version>
