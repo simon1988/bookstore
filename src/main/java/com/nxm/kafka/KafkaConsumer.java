@@ -6,8 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
@@ -41,7 +46,25 @@ public class KafkaConsumer {
 	private static Logger logger = LoggerFactory.getLogger("kafka");
 	
 	private static final ExecutorService consumerMainThreadPool = Executors.newSingleThreadExecutor();
-	private static final ExecutorService consumerWorkerThreadPool = Executors.newFixedThreadPool(10);
+	private static final ExecutorService consumerBackupThreadPool = new ThreadPoolExecutor(1, 2, 600L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
+	private static final ExecutorService consumerWorkerThreadPool = new ThreadPoolExecutor(10, 20, 600L, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(1000),Executors.defaultThreadFactory(),
+			new RejectedExecutionHandler(){//sleep a while, create an independent thread to execute the task
+				@Override
+				public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+					logger.error("[KafkaConsumer] consumerWorkerThreadPool rejected task {}", r);
+					try{
+						consumerBackupThreadPool.execute(r);
+					} catch(Exception e){
+						logger.error("[KafkaConsumer RejectedExecutionHandler] when starting new thread!", e);
+					}
+					try {
+						logger.error("[KafkaConsumer] main thread sleeping for {}ms...", 10000l);
+						Thread.sleep(10000l);
+					} catch (InterruptedException e) {
+						logger.error("[KafkaConsumer RejectedExecutionHandler] sleep interupted!", e);
+					}
+				}
+			});
 	
 	@PostConstruct
 	private void init(){
@@ -74,7 +97,6 @@ public class KafkaConsumer {
 				Map<KafkaMessageType, List<Method>> methodMap = initMethodMap();
 				
 				logger.info("[KafkaConsumer] init complete methods:{}", methodMap);
-				
 				while (it.hasNext()){
 					String message = it.next().message();
 					logger.info("[KafkaConsumer] recieve raw message----->{}<-----", message);
@@ -89,14 +111,17 @@ public class KafkaConsumer {
 						continue;
 					}
 					if(StringUtils.isBlank(kafkaMessage.getMessage())){
-						logger.info("[KafkaConsumer] inner message for kafka message {} is blank, discarded.", kafkaMessage.getMessageId());
+						logger.info("[KafkaConsumer] inner message is blank! messageid:{}", kafkaMessage.getMessageId());
 						continue;
 					}
 					
 					for(Method method : methodMap.get(kafkaMessage.getMessageType())){
-						consumerWorkerThreadPool.submit(new WorkerThread(method, kafkaMessage));
+						try{
+							consumerWorkerThreadPool.execute(new WorkerThread(method, kafkaMessage));
+						}catch(Exception e){
+							logger.error("[KafkaConsumer] failed to add new task to consumerWorkerThreadPool! messageId:{}", kafkaMessage.getMessageId(), e);
+						}
 					}
-					
 				}
 			}
 			
@@ -127,7 +152,11 @@ public class KafkaConsumer {
 		});
 		consumerMainThreadPool.shutdown();
 	}
-	private class WorkerThread implements Runnable{
+	private class WorkerThread implements Runnable {
+		@Override
+		public String toString() {
+			return "[method:" + method.getName() + ", messageId:" + kafkaMessage.getMessageId() + "]";
+		}
 		private Method method;
 		private KafkaMessage kafkaMessage;
 		public WorkerThread(Method method, KafkaMessage kafkaMessage){
@@ -137,9 +166,16 @@ public class KafkaConsumer {
 		@Override
 		public void run() {
 			try{
+				long beginTime = System.currentTimeMillis();
 				method.invoke(kafkaMessageProcessor, kafkaMessage.getMessage());
+				long usedTime = System.currentTimeMillis()-beginTime;
+				if(usedTime > 4000l){
+					logger.error("[KafkaConsumer] task {} timeout! finished in {}ms", toString(), usedTime);
+				}else{
+					logger.info("[KafkaConsumer] task {} succeeded in {}ms", toString(), usedTime);
+				}
 			}catch(Exception e){
-				logger.error("[KafkaConsumer] failed to invoke method {} for kafka message {}", method.getName(), kafkaMessage.getMessageId(), e);
+				logger.error("[KafkaConsumer] failed to invoke task {}", toString(), e);
 			}
 		}
 		
