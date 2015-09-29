@@ -13,6 +13,7 @@ import org.junit.runners.JUnit4;
 
 import com.nxm.bookstore.util.DES;
 import com.nxm.bookstore.util.JaxbUtil;
+import com.nxm.bookstore.util.MD5Util;
 
 /*
  * 交易端口 45001
@@ -66,23 +67,34 @@ public class SgeTcpTest {
 			return new String(databbb, "gbk");
 		}
 	}
-
 	
 	@Test
     public void testOpenAccount() throws Exception{
 		SgeTcpRequest request = new SgeTcpRequest();
 		SgeTcpHead head = new SgeTcpHead();
-		head.setAdapter("880111");
-		head.setBankNumber("1111");
+		head.setAdapter("880120");
+		head.setBankNumber("0077");
 		head.setTermType("02");
-		head.setTellerId("1111");
-		head.setTellerId1("");
-		head.setTellerId2("");
-		head.setBankSeq("123456");
+		head.setBranchId("B0077001");
+		head.setTellerId("C09100");
+		head.setBankSeq("bk14435111063297206352");
 		head.setWorkDate("20150526");
 		head.setExchangeDate("20150526");
 		SgeTcpRecord record = new SgeTcpRecord();
+		record.setAreaCode("110000");
+		record.setZipCode("100001");
+		record.setTel("13621236892");
+		record.setAddress("北京");
+		record.setCertType("s");
+		record.setCustomerName("元辰");
+		record.setMobile("13621236892");
+		record.setCertNo("441700198910125249");
+		record.setTradePassword(MD5Util.MD5("147369a"));
+		record.setBrokerList("00771");
+		record.setFundPassword(MD5Util.MD5("147369"));
+		record.setGradeId("007701");
 		record.setBranchId("B0077001");
+		record.setCustType("C90001");
 		List<SgeTcpRecord> body = new ArrayList<SgeTcpRecord>();
 		body.add(record);
 		request.setHead(head);
@@ -91,6 +103,33 @@ public class SgeTcpTest {
 		String requestBody = JaxbUtil.convertToXml(request,"GBK");
 		
         String res = sendRequest(51077, requestBody, false);
+        
+        System.out.println(res);
+    }
+	@Test
+    public void testSignAccount() throws Exception{
+		SgeTcpRequest request = new SgeTcpRequest();
+		SgeTcpHead head = new SgeTcpHead();
+		head.setSignAdapter("610001");
+		head.setSignSDBId("611111");
+		head.setSignWorkDate("20150930");
+		head.setSignBankId("0077");
+		head.setSignSeqNo("14435801116118769279");
+		SgeTcpRecord record = new SgeTcpRecord();
+		record.setSignCustName("元辰");
+		record.setSignCertNo("441700198910125249");
+		record.setSignFirmid("1080124488");
+		record.setSignCertType("s");
+		record.setSignCurrencyType("RMB");
+		record.setSignBankInfo("015:666615484348888888");
+		List<SgeTcpRecord> body = new ArrayList<SgeTcpRecord>();
+		body.add(record);
+		request.setHead(head);
+		request.setBody(body);
+		
+		String requestBody = JaxbUtil.convertToXml(request,"GBK");
+		
+        String res = sendRequest(52077, requestBody, false);
         
         System.out.println(res);
     }

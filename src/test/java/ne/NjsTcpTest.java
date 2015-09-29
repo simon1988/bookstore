@@ -1,5 +1,6 @@
 package ne;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -14,15 +15,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.nxm.bookstore.util.JsonUtil;
 
 @RunWith(JUnit4.class)
 public class NjsTcpTest {
-	private static Logger logger=LoggerFactory.getLogger(NjsTcpTest.class);
 	private static Socket socket;
 	private static OutputStream osm;
 	private static InputStream ism;
@@ -50,43 +48,14 @@ public class NjsTcpTest {
 		socket.close();
 	}
 
-	public int read(byte[] b, InputStream is) throws Exception {
+	private byte[] readByteArray(InputStream ism, int length) throws Exception{
 		int count = 0;
-		while (count < b.length) {
-			int cnt = is.read(b, count, (b.length - count));
+		byte[] bytes = new byte[length];
+		while (count < bytes.length) {
+			int cnt = ism.read(bytes, count, (bytes.length - count));
 			count += cnt;
 		}
-		return count;
-	}
-
-	private byte[] readByteArrayFromInputStream(int length) throws Exception {
-		if (length <= 0) {
-			return null;
-		}
-		byte[] bytes = new byte[length];
-		read(bytes, ism);
 		return bytes;
-	}
-
-	@SuppressWarnings("unused")
-	private StringBuilder readResult(boolean isFirst) throws Exception {
-		StringBuilder allData = new StringBuilder();
-		if (isFirst) {
-			byte[] discard = readByteArrayFromInputStream(24);
-		}
-		byte[] adapter = readByteArrayFromInputStream(6);
-		byte[] datalen = readByteArrayFromInputStream(6);
-		byte[] next = readByteArrayFromInputStream(1);
-		byte[] random = readByteArrayFromInputStream(11);
-		int rev_data_length = Integer.valueOf(new String(datalen));
-		byte[] data = readByteArrayFromInputStream(rev_data_length);
-		allData.append(new String(data, "gbk"));
-		String rev_next = new String(next);
-		if ("Y".equals(rev_next)) {
-			return allData.append(readResult(false));
-		} else {
-			return allData;
-		}
 	}
 
 	private String buildSendStr(String adapter, Map<String, String> paramsMap) throws UnsupportedEncodingException {
@@ -97,12 +66,27 @@ public class NjsTcpTest {
 		return String.format("016005%06dN%s%s%06dN%s%s", firstLength, firstRandom, adapter, secondLength, firstRandom, params);
 	}
 
-	private String sendRequest(Map<String, String> paramMap, String adapter) throws Exception {
-		String sendStr = buildSendStr(adapter, paramMap);
+	@SuppressWarnings("unused")
+	private String sendRequest(String adapterId, Map<String, String> paramMap) throws Exception {
+		String sendStr = buildSendStr(adapterId, paramMap);
 		System.out.println(sendStr);
 		osm.write(sendStr.getBytes("GBK"));
 		osm.flush();
-		return readResult(true).toString();
+		
+		ByteArrayOutputStream out = new ByteArrayOutputStream() ;
+        String revNext = "Y" ;
+        while("Y".equals(revNext)) {
+			byte[] adapter = readByteArray(ism, 6);
+            byte[] datalen = readByteArray(ism, 6);
+            byte[] next = readByteArray(ism, 1);
+            byte[] random = readByteArray(ism, 11);
+            int rev_data_length = Integer.valueOf(new String(datalen));
+            byte[] data = readByteArray(ism, rev_data_length) ;
+            out.write(data);
+            revNext = new String(next);
+        }
+        String result = out.toString("gbk");
+        return result.substring(24);
 	}
 
 	@Test
@@ -124,7 +108,7 @@ public class NjsTcpTest {
 		params.put("BANKCODE", "041");
 		params.put("TRADEPWD", "teamfa");
 		params.put("BANKPWD", "158110");
-		String result = sendRequest(params, "014009");
+		String result = sendRequest("014009", params);
 		System.out.println(result);
 	}
 
@@ -132,7 +116,7 @@ public class NjsTcpTest {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("TRADERID", "16370325");
 		params.put("TRADEPASS", "teamfa");
-		String result = sendRequest(params, "011001");
+		String result = sendRequest("011001", params);
 		System.out.println(result);
 		
 		JsonNode jsonNode = JsonUtil.readTree(result);
@@ -148,7 +132,17 @@ public class NjsTcpTest {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("TRADERID", "16370325");
 		params.put("TOKEN", token);
-		String result = sendRequest(params, "011008");
+		String result = sendRequest("011008", params);
+		System.out.println(result);
+	}
+	
+	@Test
+    public void testChangePassword() throws Exception {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("TRADERID", "16370325");
+		params.put("OLDPWD", "teamfa1");
+		params.put("NEWPWD", "teamfa");
+		String result = sendRequest("011032", params);
 		System.out.println(result);
 	}
 }
