@@ -162,8 +162,8 @@
 						<Xlint />
 					</compilerArguments>
 					<verbose>true</verbose>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 					<showWarnings>true</showWarnings>
 				</configuration>
 			</plugin>
@@ -178,7 +178,7 @@
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>9.2.8.v20150217</version>
+				<version>9.3.0.M2</version>
 				<configuration>
 					<scanIntervalSeconds>10</scanIntervalSeconds>
 					<webAppConfig>
