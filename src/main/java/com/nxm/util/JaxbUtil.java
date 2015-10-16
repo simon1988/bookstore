@@ -1,4 +1,4 @@
-package com.nxm.bookstore.util;
+package com.nxm.util;
 
 import java.io.StringReader;
 import java.io.StringWriter;

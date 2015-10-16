@@ -11,9 +11,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import com.nxm.bookstore.util.DES;
-import com.nxm.bookstore.util.JaxbUtil;
-import com.nxm.bookstore.util.MD5Util;
+import com.nxm.util.DES;
+import com.nxm.util.JaxbUtil;
+import com.nxm.util.MD5Util;
 
 /*
  * 交易端口 45001
@@ -24,7 +24,7 @@ import com.nxm.bookstore.util.MD5Util;
  */
 @RunWith(JUnit4.class)
 public class SgeTcpTest {
-	
+	private static final String SGE_SERVER_IP = "210.21.197.124";
 	private int read(byte[] b, InputStream is) throws IOException {
 		int count = 0;
 		while (count < b.length) {
@@ -42,7 +42,7 @@ public class SgeTcpTest {
 		System.out.println("req: " + outstr);
 		System.out.println(body);
 		try(
-			Socket socket = new Socket("210.21.197.124",port);
+			Socket socket = new Socket(SGE_SERVER_IP, port);
 			OutputStream osm = socket.getOutputStream();
 			InputStream ism = socket.getInputStream();){
 			
@@ -59,7 +59,7 @@ public class SgeTcpTest {
 			System.out.println("res: " +datelenstr);
 			
 			int datalength = Integer.valueOf(new String(datalen));
-			if (datalength < 0 || datalength > 1000) {
+			if (datalength < 0 || datalength > 5000) {
 				throw new Exception("res length wrong!");
 			}
 			byte[] databbb = new byte[datalength];
@@ -67,7 +67,31 @@ public class SgeTcpTest {
 			return new String(databbb, "gbk");
 		}
 	}
-	
+	@Test
+    public void testQueryAccount() throws Exception{
+		SgeTcpRequest request = new SgeTcpRequest();
+		SgeTcpHead head = new SgeTcpHead();
+		head.setAdapter("880140");
+		head.setBankNumber("0077");
+		head.setTermType("02");
+		head.setBranchId("B0077001");
+		head.setTellerId("C09100");
+		head.setBankSeq("bk14435111063297206352");
+		head.setWorkDate("20150526");
+		head.setExchangeDate("20150526");
+		SgeTcpRecord record = new SgeTcpRecord();
+		record.setFirmId("1080124488");//<cert_type_id>s</cert_type_id><cert_num>441700198910125249</cert_num>
+		List<SgeTcpRecord> body = new ArrayList<SgeTcpRecord>();
+		body.add(record);
+		request.setHead(head);
+		request.setBody(body);
+		
+		String requestBody = JaxbUtil.convertToXml(request,"GBK");
+		
+        String res = sendRequest(51077, requestBody, false);
+        
+        System.out.println(res);
+    }
 	@Test
     public void testOpenAccount() throws Exception{
 		SgeTcpRequest request = new SgeTcpRequest();

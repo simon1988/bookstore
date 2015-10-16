@@ -1,4 +1,4 @@
-package com.nxm.bookstore.util;
+package com.nxm.util;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

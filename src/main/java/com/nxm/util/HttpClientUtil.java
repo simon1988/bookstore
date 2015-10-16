@@ -1,4 +1,4 @@
-package com.nxm.bookstore.util;
+package com.nxm.util;
 
 import java.io.File;
 import java.io.IOException;

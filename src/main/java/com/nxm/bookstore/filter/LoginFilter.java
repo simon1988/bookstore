@@ -12,7 +12,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.nxm.bookstore.util.RegexUtil;
+import com.nxm.util.RegexUtil;
 
 public class LoginFilter implements Filter {
 

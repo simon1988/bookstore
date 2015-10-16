@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nxm.bookstore.dao.ICustomerDao;
 import com.nxm.bookstore.model.Customer;
-import com.nxm.bookstore.util.MD5Util;
+import com.nxm.util.MD5Util;
 
 @Service
 public class CustomerService {

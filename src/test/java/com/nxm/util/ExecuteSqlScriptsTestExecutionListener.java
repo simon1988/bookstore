@@ -1,4 +1,4 @@
-package com.nxm.bookstore.util;
+package com.nxm.util;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;

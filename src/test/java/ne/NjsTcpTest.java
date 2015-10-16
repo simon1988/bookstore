@@ -17,7 +17,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.nxm.bookstore.util.JsonUtil;
+import com.nxm.util.JsonUtil;
 
 @RunWith(JUnit4.class)
 public class NjsTcpTest {
@@ -86,40 +86,35 @@ public class NjsTcpTest {
             revNext = new String(next);
         }
         String result = out.toString("gbk");
-        return result.substring(24);
+        return result;
 	}
 
 	@Test
 	public void testOpenAccount() throws Exception {
-		/*
-		{"FIRMCARDNO":"412827198709237522","BANKCODE":"041","BANKNO":"666612345678456312",
-		"TRADERID":"16380320","TRADEPWD":"qwe123","FIRMCARDTYPE":"1","FULLNAME":"罗倩倩",
-		"TELNO":"18612680469","SIGNBANKNAME":"农业银行","FIRMID":"163","BANKPWD":"158110"}
-		*/
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("FULLNAME", "狄好宇");
-		params.put("TELNO", "18612680469");
+		params.put("FULLNAME", "元辰");
+		params.put("TELNO", "13621236892");
 		params.put("FIRMCARDTYPE", "1");
-		params.put("FIRMCARDNO", "511900199112114493");
-		params.put("SIGNBANKNAME", "农业银行");
-		params.put("BANKNO", "666612345678456318");
-		params.put("TRADERID", "16370325");
+		params.put("FIRMCARDNO", "441700198910125249");
+		params.put("SIGNBANKNAME", "招商银行");
+		params.put("BANKNO", "666615484348888888");
+		params.put("TRADERID", "16385210");
 		params.put("FIRMID", "163");
 		params.put("BANKCODE", "041");
-		params.put("TRADEPWD", "teamfa");
-		params.put("BANKPWD", "158110");
+		params.put("TRADEPWD", "147369a");
+		params.put("BANKPWD", "147369");
 		String result = sendRequest("014009", params);
 		System.out.println(result);
 	}
 
 	private String getLoginPartnerToken() throws Exception {
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("TRADERID", "16370325");
-		params.put("TRADEPASS", "teamfa");
+		params.put("TRADERID", "16385210");
+		params.put("TRADEPASS", "147369a");
 		String result = sendRequest("011001", params);
 		System.out.println(result);
 		
-		JsonNode jsonNode = JsonUtil.readTree(result);
+		JsonNode jsonNode = JsonUtil.readTree(result.substring(24));
 		if(jsonNode.get("TOKEN")==null || StringUtils.isBlank(jsonNode.get("TOKEN").asText())){
 			Assert.fail("get token failed after login!");
 		}
@@ -130,7 +125,7 @@ public class NjsTcpTest {
     public void testQueryFund() throws Exception {
 		String token = getLoginPartnerToken();
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("TRADERID", "16370325");
+		params.put("TRADERID", "16385210");
 		params.put("TOKEN", token);
 		String result = sendRequest("011008", params);
 		System.out.println(result);

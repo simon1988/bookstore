@@ -1,4 +1,4 @@
-package com.nxm.bookstore;
+package com.nxm.bookstore.service;
 
 import java.util.Collection;
 
