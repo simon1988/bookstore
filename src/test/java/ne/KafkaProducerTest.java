@@ -2,10 +2,6 @@ package ne;
 
 import java.util.Properties;
 
-import kafka.javaapi.producer.Producer;
-import kafka.producer.KeyedMessage;
-import kafka.producer.ProducerConfig;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -13,6 +9,10 @@ import org.junit.runners.JUnit4;
 import com.nxm.kafka.KafkaMessage;
 import com.nxm.kafka.KafkaMessageType;
 import com.nxm.kafka.KafkaUtils;
+
+import kafka.javaapi.producer.Producer;
+import kafka.producer.KeyedMessage;
+import kafka.producer.ProducerConfig;
 
 @RunWith(JUnit4.class)
 public class KafkaProducerTest {
@@ -31,8 +31,8 @@ public class KafkaProducerTest {
 	private String getKafkaMessage(String rawmsg, KafkaMessageType type){
 		KafkaMessage kmsg = new KafkaMessage();
 		kmsg.setMessage(rawmsg);
-		kmsg.setMessageId("6225a58d58254b95a3785e4308ac544c");
-		kmsg.setMessageTime("2015-10-12 15:55:30");
+		kmsg.setMessageId(KafkaUtils.getUUID());
+		kmsg.setMessageTime(KafkaUtils.getCurrentTime());
 		kmsg.setMessageType(type);
 		String msg = KafkaUtils.objectToJson(kmsg);
 		System.out.println(msg);
@@ -63,6 +63,15 @@ public class KafkaProducerTest {
 		String TOPIC = "gjs_trade";
 		Producer<String, String> producer = getProducer("kafka.dianshang.163.com:9093,kafka.dianshang.163.com:9094,kafka.dianshang.163.com:9095");
 		String rawmsg = "{\"bankCardNo\":\"6228231455139166761\",\"createTime\":1444707755000,\"currencyType\":\"00\",\"firmId\":\"18896002\",\"localOrderId\":\"151013020918\",\"notifyStatus\":0,\"orderId\":\"2015101311JY89674030\",\"orderMoney\":\"2100.00\",\"orderMoneyCent\":210000,\"orderType\":\"deposit\",\"orderTypeDisplay\":\"1\",\"partnerId\":\"njs\",\"realTradeMoney\":\"2100.00\",\"realTradeMoneyCent\":210000,\"realTradeTime\":1444707758000,\"reconStatus\":0,\"status\":2,\"updateTime\":1444707758000,\"userName\":\"m13760979551@163.com\"}";
+		producer.send(new KeyedMessage<String, String>(TOPIC, getKafkaMessage(rawmsg, KafkaMessageType.IN_MONEY)));
+		producer.close();
+	}
+	
+	@Test
+	public void sendMessageNXMtest(){
+		String TOPIC = "nxm";
+		Producer<String, String> producer = getProducer("127.0.0.1:9092,127.0.0.1:9093,127.0.0.1:9094");
+		String rawmsg = "NXM is the best forEver!";
 		producer.send(new KeyedMessage<String, String>(TOPIC, getKafkaMessage(rawmsg, KafkaMessageType.IN_MONEY)));
 		producer.close();
 	}

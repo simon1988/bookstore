@@ -56,5 +56,11 @@ public class KafkaConsumerTest {
 		String SERVER = "223.252.197.84:2182";
 		startConsumer(SERVER, TOPIC);
 	}
+	@Test
+	public void consumeNXM(){
+		String TOPIC = "nxm";
+		String SERVER = "127.0.0.1:2181";
+		startConsumer(SERVER, TOPIC);
+	}
 
 }
