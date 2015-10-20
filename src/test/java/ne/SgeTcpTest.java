@@ -93,6 +93,60 @@ public class SgeTcpTest {
         System.out.println(res);
     }
 	@Test
+    public void testLockAccount() throws Exception{
+		SgeTcpRequest request = new SgeTcpRequest();
+		SgeTcpHead head = new SgeTcpHead();
+		head.setAdapter("880142");
+		head.setBankNumber("0077");
+		head.setTermType("02");
+		head.setBranchId("B0077001");
+		head.setTellerId("C09100");
+		head.setBankSeq("bk14435111063297206352");
+		head.setWorkDate("20150526");
+		head.setExchangeDate("20150526");
+		SgeTcpRecord record = new SgeTcpRecord();
+		record.setFirmId("1080124488");
+		record.setOldAccountStatus("1");
+		record.setNewAccountStatus("3");
+		List<SgeTcpRecord> body = new ArrayList<SgeTcpRecord>();
+		body.add(record);
+		request.setHead(head);
+		request.setBody(body);
+		
+		String requestBody = JaxbUtil.convertToXml(request,"GBK");
+		
+        String res = sendRequest(51077, requestBody, false);
+        
+        System.out.println(res);
+    }
+	@Test
+    public void testUnlockAccount() throws Exception{
+		SgeTcpRequest request = new SgeTcpRequest();
+		SgeTcpHead head = new SgeTcpHead();
+		head.setAdapter("880142");
+		head.setBankNumber("0077");
+		head.setTermType("02");
+		head.setBranchId("B0077001");
+		head.setTellerId("C09100");
+		head.setBankSeq("bk14435111063297206352");
+		head.setWorkDate("20150526");
+		head.setExchangeDate("20150526");
+		SgeTcpRecord record = new SgeTcpRecord();
+		record.setFirmId("1080124488");
+		record.setOldAccountStatus("3");
+		record.setNewAccountStatus("1");
+		List<SgeTcpRecord> body = new ArrayList<SgeTcpRecord>();
+		body.add(record);
+		request.setHead(head);
+		request.setBody(body);
+		
+		String requestBody = JaxbUtil.convertToXml(request,"GBK");
+		
+        String res = sendRequest(51077, requestBody, false);
+        
+        System.out.println(res);
+    }
+	@Test
     public void testOpenAccount() throws Exception{
 		SgeTcpRequest request = new SgeTcpRequest();
 		SgeTcpHead head = new SgeTcpHead();
@@ -113,9 +167,9 @@ public class SgeTcpTest {
 		record.setCustomerName("元辰");
 		record.setMobile("13621236892");
 		record.setCertNo("441700198910125249");
-		record.setTradePassword(MD5Util.MD5("147369a"));
+		record.setTradePassword(MD5Util.MD5ToLowerCase("147369a"));
 		record.setBrokerList("00771");
-		record.setFundPassword(MD5Util.MD5("147369"));
+		record.setFundPassword(MD5Util.MD5ToLowerCase("147369"));
 		record.setGradeId("007701");
 		record.setBranchId("B0077001");
 		record.setCustType("C90001");
@@ -157,24 +211,23 @@ public class SgeTcpTest {
         
         System.out.println(res);
     }
-	
 	@Test
     public void testLoginPartner() throws Exception{
 		SgeTcpRequest request = new SgeTcpRequest();
 		SgeTcpHead head = new SgeTcpHead();
 		head.setAdapter("800101");
-		head.setUserId("1080010279");
-		head.setBankNumber("1111");
-		head.setBranchId("B00000");
-		head.setFactDate("20150128");
-		head.setFactTime("13:40:20");
-		head.setExchangeDate("20150526");
-		head.setSerialNumber("12345678");
+		head.setUserId("1080124488");
+		head.setBankNumber("0077");
+		head.setBranchId("B0077001");
+		head.setFactDate("20151022");
+		head.setFactTime("20:44:41");
+		head.setExchangeDate("");
+		head.setSerialNumber("14455178812869004967");
 		head.setRspCode("");
 		head.setRspMessage("");
 		SgeTcpRecord record = new SgeTcpRecord();
-		record.setUserPassword("e10adc3949ba59abbe56e057f20f883e");
-		record.setLoginIp("127.0.0.1");
+		record.setUserPassword(MD5Util.MD5ToLowerCase("147369a"));
+		record.setLoginIp("61.135.255.86");
 		List<SgeTcpRecord> body = new ArrayList<SgeTcpRecord>();
 		body.add(record);
 		request.setHead(head);

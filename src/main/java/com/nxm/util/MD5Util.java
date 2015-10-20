@@ -28,6 +28,13 @@ public class MD5Util {
 			return null;
 		}
 	}
+	public final static String MD5ToLowerCase(String s) {
+		String md5 = MD5(s);
+		if(md5==null){
+			return null;
+		}
+		return md5.toLowerCase();
+	}
 	public static void main(String args[]){
 		System.out.println(MD5("simon"));
 	}

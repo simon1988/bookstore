@@ -20,6 +20,8 @@ public class RedisTest {
 			  jedis.set("foo", "bar");
 			  String foobar = jedis.get("foo");
 			  System.out.println(foobar);
+			  jedis.hset("map", "key", "");
+			  System.out.println(jedis.hget("map", "key"));
 		}
 		pool.close();
 	}

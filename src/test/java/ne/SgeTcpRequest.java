@@ -243,6 +243,10 @@ class SgeTcpRecord {
 	private String gradeId;
 	@XmlElement(name = "cust_type_id")
 	private String custType;
+	@XmlElement(name = "old_acct_stat")
+	private String oldAccountStatus;
+	@XmlElement(name = "new_acct_stat")
+	private String newAccountStatus;
 
 	@XmlElement(name = "inv_name")
 	private String signCustName;
@@ -399,6 +403,22 @@ class SgeTcpRecord {
 
 	public void setCustType(String custType) {
 		this.custType = custType;
+	}
+	
+	public String getOldAccountStatus() {
+		return oldAccountStatus;
+	}
+
+	public void setOldAccountStatus(String oldAccountStatus) {
+		this.oldAccountStatus = oldAccountStatus;
+	}
+
+	public String getNewAccountStatus() {
+		return newAccountStatus;
+	}
+
+	public void setNewAccountStatus(String newAccountStatus) {
+		this.newAccountStatus = newAccountStatus;
 	}
 
 	public String getSignCustName() {
