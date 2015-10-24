@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nxm.bookstore.service.QRService;
@@ -56,10 +58,28 @@ public class TestController {
 	
 	@ResponseBody
 	@RequestMapping("/test/json")
-	public Map<String, Object> jsonTest(){
+	public Map<String, Object> json(){
 		Map<String, Object> map = new HashMap<>();
 		map.put("code", 200);
 		map.put("msg", "OK");
 		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/test/async")
+	public DeferredResult<String> async(){
+		DeferredResult<String> deferredResult = new DeferredResult<>();
+        CompletableFuture.supplyAsync(()->{
+        	try {
+				Thread.sleep(5000);
+			} catch (Exception e) {
+				logger.error("thread interupted!", e);;
+			}
+        	logger.info("async thread finished");
+        	return "Finished!";
+        	})
+            .whenCompleteAsync((result, throwable) -> deferredResult.setResult(result));
+        logger.info("Servlet thread released");
+        return deferredResult;
 	}
 }
