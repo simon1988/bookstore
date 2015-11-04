@@ -17,7 +17,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.nxm.util.JsonUtil;
+import com.nxm.util.JacksonUtils;
 
 @RunWith(JUnit4.class)
 public class NjsTcpTest {
@@ -59,7 +59,7 @@ public class NjsTcpTest {
 	}
 
 	private String buildSendStr(String adapter, Map<String, String> paramsMap) throws UnsupportedEncodingException {
-		String params = JsonUtil.objectToJson(paramsMap);
+		String params = JacksonUtils.objectToJson(paramsMap);
 		String firstRandom = String.valueOf(System.currentTimeMillis()).substring(2);
 		int secondLength = params.getBytes("GBK").length;
 		int firstLength = secondLength + 24;
@@ -88,6 +88,11 @@ public class NjsTcpTest {
         String result = out.toString("gbk");
         return result;
 	}
+	
+	@Test
+	public void testDummy() throws Exception {
+		System.out.println(sendRequest("000000",new HashMap<String, String>()));
+	}
 
 	@Test
 	public void testOpenAccount() throws Exception {
@@ -114,7 +119,7 @@ public class NjsTcpTest {
 		String result = sendRequest("011001", params);
 		System.out.println(result);
 		
-		JsonNode jsonNode = JsonUtil.readTree(result.substring(24));
+		JsonNode jsonNode = JacksonUtils.readJsonTree(result.substring(24));
 		if(jsonNode.get("TOKEN")==null || StringUtils.isBlank(jsonNode.get("TOKEN").asText())){
 			Assert.fail("get token failed after login!");
 		}
