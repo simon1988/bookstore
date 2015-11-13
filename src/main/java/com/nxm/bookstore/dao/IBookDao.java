@@ -11,6 +11,7 @@ public interface IBookDao {
 	
 	public Book getBookById(@Param("id") int id);
 	public Collection<Book> getBooks();
+	public Double getBookPriceById(@Param("id") int id);
 	
 	public Collection<Order> getOrdersByCustomerId(@Param("id") int customerId);
 	public int generateOrderId(@Param("order") Order order);

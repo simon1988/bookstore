@@ -12,10 +12,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nxm.bookstore.dao.IBookDao;
 import com.nxm.bookstore.model.Book;
 import com.nxm.bookstore.model.Order;
 import com.nxm.bookstore.service.BookService;
 import com.nxm.bookstore.service.QRService;
+
+import org.junit.Assert;
 
 @ContextConfiguration(locations = {"classpath:spring/applicationContext-test.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -25,6 +28,8 @@ public class BookServiceTest {
 	private BookService bookService;
 	@Autowired
 	private QRService qrService;
+	@Autowired
+	private IBookDao bookDao;
 	@Test
 	@Transactional
 	public void TestBooksOrders(){
@@ -42,6 +47,11 @@ public class BookServiceTest {
 		Collection<Book> books = bookService.getCartBooks("simon");
 		logger.info("books:{}", books);
 		bookService.placeNewOrder("simon");
+	}
+	@Test
+	@Transactional
+	public void TestBooksPrice(){
+		Assert.assertEquals(42.69, bookDao.getBookPriceById(1).doubleValue(),0.1);
 	}
 	@Test
 	@Ignore

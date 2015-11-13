@@ -11,6 +11,10 @@
 	<select id="getBooks" resultType="Book">
 		select id,name,author,price from book
 	</select>
+	
+	<select id="getBookPriceById" resultType="Double">
+		select price from book where id = #{id}
+	</select>
 
 	<select id="getOrdersByCustomerId" resultMap="orderResult">
 		select a.id a_id, a.order_date, b.id b_id, b.name, b.author, b.price, c.id c_id, c.name c_name, c.email email 
