@@ -14,7 +14,13 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="typeAliasesPackage" value="com.nxm.bookstore.model" />
+		<property name="plugins">
+	 		<array>
+	 			<ref bean="sqlTimeCostInterceptor"/>
+	 		</array>
+	 	</property>
 	</bean>
+	<bean id="sqlTimeCostInterceptor" class="com.nxm.bookstore.aop.SqlTimeCostInterceptor" />
 
 	<!-- scan for mappers and let them be autowired -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
