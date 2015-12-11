@@ -1,6 +1,8 @@
 package com.nxm.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -8,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -16,6 +19,9 @@ public class JacksonUtils {
 	private static Logger logger=LoggerFactory.getLogger(JacksonUtils.class);
 	private static ObjectMapper objectMapper = new ObjectMapper();
 	private static ObjectMapper xmlMapper = new XmlMapper();
+	static{
+		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	}
 	
 	public static String objectToJson(Object object) {
 		try {
@@ -92,14 +98,23 @@ public class JacksonUtils {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static void main(String args[]){
 		Map<String,Object> map = new HashMap<>();
 		map.put("retCode", 200);
 		map.put("ret", "test");
+		List<Object> list = new ArrayList<>();
+		list.add("test1");
+		list.add("test2");
+		map.put("list", list);
 		String json = objectToJson(map);
 		System.out.println(json);
+		
+		json = "{\"ret\":\"test\",\"retCode\":200,\"list\":[{\"m\":\"m1\"},{\"m\":\"m2\"}]}";
 		map = jsonToObject(json, new TypeReference<Map<String,Object>>(){});
 		int retCode = (Integer)map.get("retCode");
 		System.out.println(retCode);
+		list = (List<Object>)map.get("list");
+		System.out.println(list);
 	}
 }

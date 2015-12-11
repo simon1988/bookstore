@@ -247,6 +247,8 @@ class SgeTcpRecord {
 	private String oldAccountStatus;
 	@XmlElement(name = "new_acct_stat")
 	private String newAccountStatus;
+	@XmlElement(name = "score_riskevaluation")
+	private String riskScore;
 
 	@XmlElement(name = "inv_name")
 	private String signCustName;
@@ -419,6 +421,14 @@ class SgeTcpRecord {
 
 	public void setNewAccountStatus(String newAccountStatus) {
 		this.newAccountStatus = newAccountStatus;
+	}
+
+	public String getRiskScore() {
+		return riskScore;
+	}
+
+	public void setRiskScore(String riskScore) {
+		this.riskScore = riskScore;
 	}
 
 	public String getSignCustName() {

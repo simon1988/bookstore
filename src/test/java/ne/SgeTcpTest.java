@@ -173,6 +173,8 @@ public class SgeTcpTest {
 		record.setGradeId("007701");
 		record.setBranchId("B0077001");
 		record.setCustType("C90001");
+		record.setRiskScore("88");
+		
 		List<SgeTcpRecord> body = new ArrayList<SgeTcpRecord>();
 		body.add(record);
 		request.setHead(head);
