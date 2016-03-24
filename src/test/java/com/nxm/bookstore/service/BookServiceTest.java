@@ -2,12 +2,16 @@ package com.nxm.bookstore.service;
 
 import java.util.Collection;
 
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,10 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nxm.bookstore.dao.IBookDao;
 import com.nxm.bookstore.model.Book;
 import com.nxm.bookstore.model.Order;
-import com.nxm.bookstore.service.BookService;
-import com.nxm.bookstore.service.QRService;
-
-import org.junit.Assert;
 
 @ContextConfiguration(locations = {"classpath:spring/applicationContext-test.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -57,5 +57,12 @@ public class BookServiceTest {
 	@Ignore
 	public void TestQRGenerate(){
 		System.out.println(qrService.generateQRImage("http://www.baidu.com"));
+	}
+	@Test
+	public void TestResouceLoad() throws Exception{
+		ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
+		for(Resource resource : resourcePatternResolver.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX+"spring/*.xml")){
+			logger.info(resource.toString());
+		}
 	}
 }
