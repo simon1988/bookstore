@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nxm.bookstore.dao.ICustomerDao">
+
+	<select id="getCustomerByName" resultType="Customer">
+		select id,name,password,email,balance from customer where name = #{name}
+	</select>
+	
+	<insert id="registerNewCustomer">
+		insert into customer(name,password,email) values(#{customer.name},#{customer.password},#{customer.email})
+	</insert>
+	
+	<update id="updateCustomerBalance">
+		update customer set balance=#{balance} where name=#{name}
+	</update>
+
+</mapper>
